@@ -14,19 +14,19 @@ function Navbar() {
 
         <div className="flex items-center space-x-4 md:space-x-6">
           <Link
-            to="/home"
+            to="/"
             className="text-white text-base md:text-lg hover:text-gray-400"
           >
             Home
           </Link>
           <Link
-            to="/home"
+            to="/feed-page"
             className="text-white text-base md:text-lg hover:text-gray-400"
           >
             Gallery
           </Link>
           <Link
-            to="/home"
+            to="/feed-page"
             className="text-white text-sm md:text-base font-semibold py-1 px-3 md:py-2 md:px-4 rounded-md bg-[#CF796C] hover:bg-[#b3655c] transition duration-300"
           >
             Login

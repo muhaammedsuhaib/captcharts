@@ -1,11 +1,16 @@
-import React from "react";
+import React from 'react';
 
-function Button({ onClick, type, disabled, labal, style }) {
+const Button = ({ label, className, onClick, onChange,type }) => {
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={style}>
-      {labal}
+    <button 
+      type={type}
+      className={`px-4 py-2 rounded-md font-semibold transition-all ${className}`}
+      onClick={onClick} 
+      onChange={onChange} 
+    >
+      {label}
     </button>
   );
-}
+};
 
 export default Button;

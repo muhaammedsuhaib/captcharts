@@ -1,16 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import LandingPage from "./containers/LandingPage";
 import HomePage from "./containers/HomePage";
+import FeedPage from "./containers/FeedPage";
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/feed-page" element={<FeedPage />} />
       </Routes>
     </Router>
   );
