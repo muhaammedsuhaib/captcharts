@@ -6,6 +6,7 @@ import FeedPage from "./containers/FeedPage";
 
 function App() {
   return (
+    <div className="bg-[#F7F7F7]">
     <Router>
       <Navbar />
       <Routes>
@@ -13,6 +14,7 @@ function App() {
         <Route path="/feed-page" element={<FeedPage />} />
       </Routes>
     </Router>
+    </div>
   );
 }
 
