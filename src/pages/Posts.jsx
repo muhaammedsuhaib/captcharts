@@ -1,7 +1,8 @@
-import React from "react";
+import React, {  useState } from "react";
 import profile from "../assets/profile.png";
 import Button from "../components/Button";
 import { IoMdMore } from "react-icons/io";
+import AddComment from "./AddComment";
 
 const postData = [
   {
@@ -32,6 +33,8 @@ const postData = [
 ];
 
 const Posts = () => {
+  const [addComment,setAddComment]=useState(false);
+  const Oneclose= ()=> setAddComment(false);
   return (
     <div className="flex flex-col items-center justify-center mt-4 px-4 space-y-8">
       {postData.map((post) => (
@@ -75,6 +78,7 @@ const Posts = () => {
             <Button
               label="Comment"
               className="bg-[#CF796C] hover:bg-[#a06158] text-white px-4 py-2 rounded-full w-full transition-all"
+              onClick={()=>setAddComment(true)}
             />
           </div>
 
@@ -109,6 +113,7 @@ const Posts = () => {
           </div>
         </div>
       ))}
+      {addComment&& <AddComment Oneclose={Oneclose}/>}
     </div>
   );
 };
