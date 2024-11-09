@@ -11,7 +11,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/feed-page" element={<FeedPage />} />
+        <Route path="/feed" element={<FeedPage />} />
       </Routes>
     </Router>
     </div>

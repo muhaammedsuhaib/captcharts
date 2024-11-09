@@ -20,13 +20,13 @@ function Navbar() {
             Home
           </Link>
           <Link
-            to="/feed-page"
+            to="/feed"
             className="text-white text-base md:text-lg hover:text-gray-400"
           >
             Gallery
           </Link>
           <Link
-            to="/feed-page"
+            to="/feed"
             className="text-white text-sm md:text-base font-semibold py-1 px-3 md:py-2 md:px-4 rounded-md bg-[#CF796C] hover:bg-[#b3655c] transition duration-300"
           >
             Login

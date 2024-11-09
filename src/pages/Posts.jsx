@@ -1,73 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import profile from "../assets/profile.png";
 import Button from "../components/Button";
 import { IoMdMore } from "react-icons/io";
 import AddComment from "./AddComment";
-
-const postData = [
-  {
-    id: 1,
-    username: "Anitta K",
-    time: "1 week ago",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    image: "https://via.placeholder.com/600x300",
-    comments: [
-      { replay: "how are you" },
-      { replay: "Good" },
-      { replay: "Like it!" },
-    ],
-  },
-  {
-    id: 2,
-    username: "John Doe",
-    time: "3 days ago",
-    content: "Another post content with different user data.",
-    image: "https://via.placeholder.com/600x300",
-    comments: [
-      { replay: "how are you" },
-      { replay: "Good" },
-      { replay: "Like it!" },
-    ],
-  },
-];
+import axios from "axios";
+import { formatDate } from "../utils/formatDate";
+import Loading from "../components/Loading";
 
 const Posts = () => {
-  const [addComment, setAddComment] = useState(false);
-  const Oneclose = () => setAddComment(false);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectPost, setSelectPost] = useState(null);
+
+  const closeComment = () => setSelectPost(null);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/posts");
+      setPosts(response.data.data);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      setError("Failed to fetch posts.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  if (loading) return <Loading />;
+  if (error) return <div>{error}</div>;
+
   return (
     <>
       <div className="flex flex-col items-center justify-center mt-4 px-4 space-y-8">
-        {postData.map((post) => (
+        {posts?.map((post) => (
           <div
-            key={post.id}
+            key={post._id}
             className="w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] flex flex-col bg-white shadow-md rounded-lg p-6 space-y-6"
           >
             {/* Profile Section */}
-            <div className="flex items-center space-x-4">
-              <img
-                src={profile}
-                alt="User Profile"
-                className="w-12 h-12 sm:w-16 sm:h-16 border-2 object-cover border-red-700 rounded-full"
-              />
-              <div>
-                <h3 className="text-md sm:text-lg font-semibold">
-                  {post.username}
-                </h3>
-                <span className="text-xs sm:text-sm text-gray-500">
-                  {post.time}
-                </span>
+            <div className="flex items-center space-x-4 justify-between">
+              <div className="flex items-center space-x-4">
+                <img
+                  src={profile}
+                  alt="User Profile"
+                  className="w-12 h-12 sm:w-16 sm:h-16 border-2 object-cover border-red-700 rounded-full"
+                />
+                <div>
+                  <h3 className="text-md sm:text-lg font-semibold">
+                    {post.username || "Anitta K C"}
+                  </h3>
+                  <span className="text-xs sm:text-sm text-gray-500">
+                    {formatDate(post.createdAt)}
+                  </span>
+                </div>
               </div>
+              <Button
+                label="Report"
+                className="border-2 text-[#D78F85] border-[#D78F85] rounded-lg p-0"
+              />
             </div>
 
             {/* Post Content */}
-            <p className="text-gray-700 text-sm sm:text-base">{post.content}</p>
+            <p className="text-gray-700 text-sm sm:text-base">
+              {post.description}
+            </p>
 
             {/* Post Image */}
             <img
-              src={post.image}
+              src={post.post_image}
               alt="Post"
-              className="w-full h-auto rounded-lg mt-4"
+              className="w-full h-80 object-cover rounded-lg mt-4"
             />
 
             {/* Action Buttons */}
@@ -79,13 +86,13 @@ const Posts = () => {
               <Button
                 label="Comment"
                 className="bg-[#CF796C] hover:bg-[#a06158] text-white px-4 py-2 rounded-full w-full transition-all"
-                onClick={() => setAddComment(true)}
+                onClick={() => setSelectPost(post._id)}
               />
             </div>
 
             {/* Comment Section */}
             <div className="bg-[#F9F9F9] rounded-md p-5 space-y-4">
-              {post.comments.map((com, i) => (
+              {post.comments?.map((com, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -115,7 +122,7 @@ const Posts = () => {
           </div>
         ))}
       </div>
-      {addComment && <AddComment Oneclose={Oneclose} />}
+      {selectPost && <AddComment onClose={closeComment} postId={selectPost} />}
     </>
   );
 };

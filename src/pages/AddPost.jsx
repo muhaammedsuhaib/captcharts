@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
-import Modal from '../components/Modal';
+import React, { useState } from "react";
+import Modal from "../components/Modal";
+import axios from "axios";
+import Loading from "../components/Loading";
 
 const AddPost = ({ Oneclose }) => {
+  const [loading, setloading] = useState(false);
+
   const [formData, setFormData] = useState({
     file: null,
-    title: '',
+    description: "",
   });
 
   const [errors, setErrors] = useState({
-    file: '',
-    title: '',
+    file: "",
+    description: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'file') {
+    if (name === "file") {
+      const selectedFile = files[0];
+
+      // Check if the selected file is a .jpg or .png
+      if (
+        selectedFile &&
+        !["image/jpeg", "image/png"].includes(selectedFile.type)
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          file: "Please upload a JPG or PNG file",
+        }));
+        return;
+      }
+
       setFormData((prev) => ({
         ...prev,
-        file: files[0],
+        file: selectedFile,
+      }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        file: "", // Clear error if valid file is selected
       }));
     } else {
       setFormData((prev) => ({
@@ -28,62 +50,87 @@ const AddPost = ({ Oneclose }) => {
   };
 
   const validateForm = () => {
-    let valid = true;
-    let newErrors = { file: '', title: '' };
+    const newErrors = { file: "", description: "" };
+    let isValid = true;
 
     if (!formData.file) {
-      newErrors.file = 'Image is required';
-      valid = false;
+      newErrors.file = "Image is required";
+      isValid = false;
     }
-    if (!formData.title.trim()) {
-      newErrors.title = 'Title is required';
-      valid = false;
+
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+      isValid = false;
     }
 
     setErrors(newErrors);
-    return valid;
+    return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      console.log('Form data:', formData);
-      // Handle form submission here
-      Oneclose(); // Close modal after successful submission
+    if (!validateForm()) return;
+
+    const postData = new FormData();
+    postData.append("file", formData.file);
+    postData.append("description", formData.description);
+    setloading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/posts",
+        postData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      alert(response.data.message || "Post created successfully");
+      Oneclose(); // Close the modal after success
+      setloading(false);
+    } catch (error) {
+      console.error("Error uploading post:", error);
+      alert("Error uploading post");
+    } finally {
+      setloading(false);
     }
   };
-
+  if (loading) return <Loading />;
   return (
-    <Modal onclose={Oneclose} >
+    <Modal onClose={Oneclose}>
       <h2 className="text-xl font-semibold mb-4">Add New Post</h2>
 
       {/* Post Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* File Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Post
+          </label>
           <input
             type="file"
             name="file"
             onChange={handleInputChange}
+            accept=".jpg,.jpeg,.png" // Restrict file types
             className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           />
-          {errors.file && <p className="text-red-500 text-xs mt-1">{errors.file}</p>}
+          {errors.file && (
+            <p className="text-red-500 text-xs mt-1">{errors.file}</p>
+          )}
         </div>
 
-        {/* Title Input */}
+        {/* Description Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-          <input
-            type="text"
-            name="title"
-            placeholder="Enter title"
-            value={formData.title}
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+            placeholder="Enter description"
+            value={formData.description}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
-          {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+          {errors.description && (
+            <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+          )}
         </div>
 
         {/* Submit Button */}

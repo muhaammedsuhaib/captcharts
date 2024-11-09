@@ -1,29 +1,32 @@
 import React, { useState } from "react";
 import Modal from "../components/Modal";
+import axios from "axios";
 
-const AddComment = ({ postId, Oneclose }) => {
+const AddComment = ({ postId, onClose }) => {
   const [comment, setComment] = useState("");
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
 
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = async(e) => {
     e.preventDefault();
     if (comment) {
-      // Here you would send the comment data (e.g., postId and comment) to your backend
-      console.log("Comment Added:", { postId, comment });
-      Oneclose(); // Close the modal after submission
+      try {
+        const response= await axios.post(`http://localhost:5000/api/posts/comment/${postId}`,{replay:comment});
+        alert(response.data.message ||'comment added successfully');
+      } catch (error) {
+        alert('error adding comment');
+      }
+      onClose(); 
     } else {
       alert("Please enter a comment before submitting!");
     }
   };
 
   return (
-    <Modal onclose={Oneclose}>
+    <Modal onClose={onClose}>
       <h2 className="text-xl font-semibold ">Add Comment</h2>
-
-      {/* Comment Form */}
       <form onSubmit={handleCommentSubmit} className="space-y-4">
         <div>
           <textarea
