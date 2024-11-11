@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Modal from "../components/Modal";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const AddComment = ({ postId, onClose }) => {
   const [comment, setComment] = useState("");
+  const [loading, setloading] = useState(false);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -12,19 +14,22 @@ const AddComment = ({ postId, onClose }) => {
 
   const handleCommentSubmit = async(e) => {
     e.preventDefault();
+    setloading(true);
     if (comment) {
       try {
         const response= await axios.post(`https://captcharts-server.onrender.com/api/posts/comment/${postId}`,{replay:comment});
         toast.success(response.data.message ||'comment added successfully');
       } catch (error) {
         toast.error('error adding comment');
+      }finally{
+        setloading(false);
+        onClose(); 
       }
-      onClose(); 
     } else {
       alert("Please enter a comment before submitting!");
     }
   };
-
+if(loading) return <Loading/>;
   return (
     <Modal onClose={onClose}>
       <h2 className="text-xl font-semibold ">Add Comment</h2>
