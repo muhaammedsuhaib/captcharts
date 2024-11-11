@@ -29,7 +29,7 @@ const Posts = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [selectPost]);
 
   if (loading) return <Loading />;
   if (error) return <div>{error}</div>;

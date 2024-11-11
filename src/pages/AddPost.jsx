@@ -79,7 +79,7 @@ const AddPost = ({ Oneclose }) => {
     setloading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/posts",
+        "https://captcharts-server.onrender.com/api/posts",
         postData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

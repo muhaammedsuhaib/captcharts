@@ -14,7 +14,7 @@ const AddComment = ({ postId, onClose }) => {
     e.preventDefault();
     if (comment) {
       try {
-        const response= await axios.post(`http://localhost:5000/api/posts/comment/${postId}`,{replay:comment});
+        const response= await axios.post(`https://captcharts-server.onrender.com/api/posts/comment/${postId}`,{replay:comment});
         toast.success(response.data.message ||'comment added successfully');
       } catch (error) {
         toast.error('error adding comment');
