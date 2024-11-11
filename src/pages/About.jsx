@@ -38,11 +38,11 @@ const About = () => {
       </p>
 
       {/* Banner Image */}
-      <div className="w-full max-w-5xl mt-6 mb-6">
+      <div className="w-full max-w-5xl mt-4 mb-4 p-4">
         <img
           src={banner}
           alt="About Banner"
-          className="w-full h-auto object-cover rounded-md shadow-md"
+          className="w-full h-auto object-cover shadow-md"
         />
       </div>
 

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./containers/HomePage";
 import FeedPage from "./containers/FeedPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/feed" element={<FeedPage />} />
       </Routes>
     </Router>
+    <Toaster/>
     </div>
   );
 }

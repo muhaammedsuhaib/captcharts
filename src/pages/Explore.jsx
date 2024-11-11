@@ -7,7 +7,7 @@ const Explore = () => {
 
       {/* Left Section */}
       <div className="w-full lg:w-2/3 flex flex-col h-[500px] items-start bg-[#C08C5D] space-y-6 p-8 sm:p-10 md:p-16 lg:p-20">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+        <h2 className="text-8xl font-bold text-white opacity-25 ">
           01
         </h2>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">

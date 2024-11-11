@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../components/Modal";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddComment = ({ postId, onClose }) => {
   const [comment, setComment] = useState("");
@@ -14,9 +15,9 @@ const AddComment = ({ postId, onClose }) => {
     if (comment) {
       try {
         const response= await axios.post(`http://localhost:5000/api/posts/comment/${postId}`,{replay:comment});
-        alert(response.data.message ||'comment added successfully');
+        toast.success(response.data.message ||'comment added successfully');
       } catch (error) {
-        alert('error adding comment');
+        toast.error('error adding comment');
       }
       onClose(); 
     } else {

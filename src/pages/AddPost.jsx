@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../components/Modal";
 import axios from "axios";
 import Loading from "../components/Loading";
+import toast from "react-hot-toast";
 
 const AddPost = ({ Oneclose }) => {
   const [loading, setloading] = useState(false);
@@ -82,12 +83,12 @@ const AddPost = ({ Oneclose }) => {
         postData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      alert(response.data.message || "Post created successfully");
+      toast.success(response.data.message || "Post created successfully");
       Oneclose(); // Close the modal after success
       setloading(false);
     } catch (error) {
       console.error("Error uploading post:", error);
-      alert("Error uploading post");
+      toast.error("Error uploading post");
     } finally {
       setloading(false);
     }

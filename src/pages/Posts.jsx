@@ -17,7 +17,7 @@ const Posts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/posts");
+      const response = await axios.get("https://captcharts-server.onrender.com/api/posts");
       setPosts(response.data.data);
     } catch (error) {
       console.error("Error fetching posts:", error);

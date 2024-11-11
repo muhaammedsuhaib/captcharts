@@ -7,13 +7,13 @@ import photo5 from '../assets/gallery5.png';
 
 const Gallery = () => {
   return (
-    <div className="w-full py-12">
+    <div className="w-full py-12 bg-[#FFFFFF]">
       <div className="max-w-screen-xl mx-auto px-6">
         {/* Title and Description */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-start text-gray-800 mb-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-start text-gray-800 mb-2 p-2">
           Gallery
         </h1>
-        <p className="text-lg sm:text-xl text-start text-gray-600 mb-8">
+        <p className="text-lg sm:text-xl text-start text-gray-600 mb-5 p-2">
           Lorem Ipsum is simply dummy text <br /> of the printing
         </p>
 
@@ -34,10 +34,10 @@ const Gallery = () => {
 
         {/* Placeholder Boxes */}
         <div className="w-full flex flex-col sm:flex-row gap-6 mt-8">
-          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl shadow-md"></div>
-          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl shadow-md"></div>
-          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl shadow-md"></div>
-          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl shadow-md"></div>
+          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl"></div>
+          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl"></div>
+          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl"></div>
+          <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 h-[248px] bg-[#F3F3F3] rounded-2xl"></div>
         </div>
       </div>
     </div>
