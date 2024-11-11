@@ -3,33 +3,13 @@ import profile from "../assets/profile.png";
 import Button from "../components/Button";
 import { IoMdMore } from "react-icons/io";
 import AddComment from "./AddComment";
-import axios from "axios";
 import { formatDate } from "../utils/formatDate";
 import Loading from "../components/Loading";
 
-const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const Posts = ({ posts, loading, error, fetchPosts }) => {
   const [selectPost, setSelectPost] = useState(null);
 
   const closeComment = () => setSelectPost(null);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("https://captcharts-server.onrender.com/api/posts");
-      setPosts(response.data.data);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setError("Failed to fetch posts.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, [selectPost]);
 
   if (loading) return <Loading />;
   if (error) return <div>{error}</div>;
@@ -91,38 +71,46 @@ const Posts = () => {
             </div>
 
             {/* Comment Section */}
-            <div className="bg-[#F9F9F9] rounded-md p-5 space-y-4">
-              {post.comments?.map((com, i) => (
-                <div key={i} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <img
-                        src={profile}
-                        alt="User Profile"
-                        className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full"
-                      />
-                      <h3 className="text-sm sm:text-md font-semibold">
-                        {post.username}
-                      </h3>
-                      <span className="text-xs sm:text-sm text-gray-500">
-                        {post.time}
-                      </span>
+            {post?.comments?.length > 0 && (
+              <div className="bg-[#F9F9F9] rounded-md p-5 space-y-4">
+                {post.comments?.map((com, i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <img
+                          src={profile}
+                          alt="User Profile"
+                          className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full"
+                        />
+                        <h3 className="text-sm sm:text-md font-semibold">
+                          {post.username}
+                        </h3>
+                        <span className="text-xs sm:text-sm text-gray-500">
+                          {post.time}
+                        </span>
+                      </div>
+                      <IoMdMore className="text-gray-500" />
                     </div>
-                    <IoMdMore className="text-gray-500" />
+                    <div
+                      className="bg-[#F5EAE3] p-3 sm:p-4 ml-10"
+                      style={{ borderRadius: "0 20px 20px 20px" }}
+                    >
+                      {com.replay}
+                    </div>
                   </div>
-                  <div
-                    className="bg-[#F5EAE3] p-3 sm:p-4 ml-10"
-                    style={{ borderRadius: "0 20px 20px 20px" }}
-                  >
-                    {com.replay}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
-      {selectPost && <AddComment onClose={closeComment} postId={selectPost} />}
+      {selectPost && (
+        <AddComment
+          onClose={closeComment}
+          postId={selectPost}
+          fetchPosts={fetchPosts}
+        />
+      )}
     </>
   );
 };

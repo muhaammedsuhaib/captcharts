@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../components/Button";
 import AddPost from "./AddPost";
 
-const Upload = () => {
+const Upload = ({ fetchPosts }) => {
   const [addpost, setAddPost] = useState(false);
 
   const Oneclose = () => setAddPost(false);
@@ -16,7 +16,7 @@ const Upload = () => {
           onClick={() => setAddPost(true)}
         />
       </div>
-      {addpost && <AddPost Oneclose={Oneclose} />}
+      {addpost && <AddPost Oneclose={Oneclose} fetchPosts={fetchPosts} />}
     </div>
   );
 };

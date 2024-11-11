@@ -4,7 +4,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import toast from "react-hot-toast";
 
-const AddPost = ({ Oneclose }) => {
+const AddPost = ({ Oneclose, fetchPosts }) => {
   const [loading, setloading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -21,8 +21,6 @@ const AddPost = ({ Oneclose }) => {
     const { name, value, files } = e.target;
     if (name === "file") {
       const selectedFile = files[0];
-
-      // Check if the selected file is a .jpg or .png
       if (
         selectedFile &&
         !["image/jpeg", "image/png"].includes(selectedFile.type)
@@ -40,7 +38,7 @@ const AddPost = ({ Oneclose }) => {
       }));
       setErrors((prevErrors) => ({
         ...prevErrors,
-        file: "", // Clear error if valid file is selected
+        file: "", 
       }));
     } else {
       setFormData((prev) => ({
@@ -84,7 +82,8 @@ const AddPost = ({ Oneclose }) => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success(response.data.message || "Post created successfully");
-      Oneclose(); // Close the modal after success
+      Oneclose();
+      fetchPosts();
       setloading(false);
     } catch (error) {
       console.error("Error uploading post:", error);

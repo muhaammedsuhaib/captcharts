@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 
-const AddComment = ({ postId, onClose }) => {
+const AddComment = ({ postId, onClose, fetchPosts }) => {
   const [comment, setComment] = useState("");
   const [loading, setloading] = useState(false);
 
@@ -12,24 +12,28 @@ const AddComment = ({ postId, onClose }) => {
     setComment(e.target.value);
   };
 
-  const handleCommentSubmit = async(e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
     if (comment) {
       try {
-        const response= await axios.post(`https://captcharts-server.onrender.com/api/posts/comment/${postId}`,{replay:comment});
-        toast.success(response.data.message ||'comment added successfully');
+        const response = await axios.post(
+          `https://captcharts-server.onrender.com/api/posts/comment/${postId}`,
+          { replay: comment }
+        );
+        toast.success(response.data.message || "comment added successfully");
+        fetchPosts();
       } catch (error) {
-        toast.error('error adding comment');
-      }finally{
+        toast.error("error adding comment");
+      } finally {
         setloading(false);
-        onClose(); 
+        onClose();
       }
     } else {
       alert("Please enter a comment before submitting!");
     }
   };
-if(loading) return <Loading/>;
+  if (loading) return <Loading />;
   return (
     <Modal onClose={onClose}>
       <h2 className="text-xl font-semibold ">Add Comment</h2>
