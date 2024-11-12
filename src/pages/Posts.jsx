@@ -67,7 +67,10 @@ const Posts = ({ posts, loading, error, fetchPosts }) => {
               alt="Post"
               className="w-full h-80 object-cover rounded-lg mt-4"
             />
-            <p>{post?.liked} Likes</p>
+            <div className="flex justify-between text-gray-400">
+              <p>{post?.liked} Likes</p>
+              {post?.comments?.length > 0 &&<p> {post?.comments?.length} comments </p>}
+              </div>
             {/* Action Buttons */}
             <div className="flex gap-4">
               <Button
