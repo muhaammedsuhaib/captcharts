@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Modal from "../components/Modal";
-import axios from "axios";
 import Loading from "../components/Loading";
 import toast from "react-hot-toast";
+import axiosInstance from "../api/axiosConfig";
 
 const AddPost = ({ Oneclose, fetchPosts }) => {
   const [loading, setloading] = useState(false);
@@ -38,7 +38,7 @@ const AddPost = ({ Oneclose, fetchPosts }) => {
       }));
       setErrors((prevErrors) => ({
         ...prevErrors,
-        file: "", 
+        file: "",
       }));
     } else {
       setFormData((prev) => ({
@@ -76,11 +76,9 @@ const AddPost = ({ Oneclose, fetchPosts }) => {
     postData.append("description", formData.description);
     setloading(true);
     try {
-      const response = await axios.post(
-        "https://captcharts-server.onrender.com/api/posts",
-        postData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const response = await axiosInstance.post("/posts", postData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       toast.success(response.data.message || "Post created successfully");
       Oneclose();
       fetchPosts();

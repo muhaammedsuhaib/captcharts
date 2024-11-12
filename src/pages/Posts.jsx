@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import profile from "../assets/profile.png";
 import Button from "../components/Button";
 import { IoMdMore } from "react-icons/io";
 import AddComment from "./AddComment";
 import { formatDate } from "../utils/formatDate";
 import Loading from "../components/Loading";
+import axiosInstance from "../api/axiosConfig";
+import toast from "react-hot-toast";
 
 const Posts = ({ posts, loading, error, fetchPosts }) => {
   const [selectPost, setSelectPost] = useState(null);
@@ -14,6 +16,15 @@ const Posts = ({ posts, loading, error, fetchPosts }) => {
   if (loading) return <Loading />;
   if (error) return <div>{error}</div>;
 
+  const addlike = async (id) => {
+    try {
+      const response = await axiosInstance.patch(`/posts/like/${id}`);
+      toast.success(response.data.message || "like added");
+      fetchPosts();
+    } catch (error) {
+      console.log(error.response.message || "like failed");
+    }
+  };
   return (
     <>
       <div className="flex flex-col items-center justify-center mt-4 px-4 space-y-8">
@@ -56,12 +67,13 @@ const Posts = ({ posts, loading, error, fetchPosts }) => {
               alt="Post"
               className="w-full h-80 object-cover rounded-lg mt-4"
             />
-
+            <p>{post?.liked} Likes</p>
             {/* Action Buttons */}
             <div className="flex gap-4">
               <Button
                 label="Like"
                 className="text-[#D78F85] hover:bg-[#f8f5f5] border-2 border-[#D78F85] px-4 py-2 rounded-full w-full transition-all"
+                onClick={() => addlike(post?._id)}
               />
               <Button
                 label="Comment"

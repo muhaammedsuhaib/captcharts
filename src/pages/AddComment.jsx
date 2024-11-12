@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Modal from "../components/Modal";
-import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
+import axiosInstance from "../api/axiosConfig";
 
 const AddComment = ({ postId, onClose, fetchPosts }) => {
   const [comment, setComment] = useState("");
@@ -17,10 +17,9 @@ const AddComment = ({ postId, onClose, fetchPosts }) => {
     setloading(true);
     if (comment) {
       try {
-        const response = await axios.post(
-          `https://captcharts-server.onrender.com/api/posts/comment/${postId}`,
-          { replay: comment }
-        );
+        const response = await axiosInstance.post(`/posts/comment/${postId}`, {
+          replay: comment,
+        });
         toast.success(response.data.message || "comment added successfully");
         fetchPosts();
       } catch (error) {
